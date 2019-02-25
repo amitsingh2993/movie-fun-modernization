@@ -22,7 +22,6 @@ import org.springframework.util.StringUtils;
 import org.superbiz.moviefun.movies.Movie;
 import org.superbiz.moviefun.movies.MoviesBean;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

@@ -12,6 +12,7 @@ description = "OpenEJB :: Web Examples :: Moviefun"
 
 dependencies {
     compile project(":components:movies")
+    compile project(":components:albums")
 
     compile "taglibs:standard:1.1.2"
     compile "org.springframework.boot:spring-boot-starter-web"
