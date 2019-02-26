@@ -1,0 +1,48 @@
+import groovy.json.JsonSlurper
+
+def getMysqlCredentials(cfAppName, databaseInstanceName) {
+    println 'Getting MySQL Credentials'
+    def appGuid = execute("cf app $cfAppName --guid").trim()
+    def envResponse = execute("cf curl /v2/apps/$appGuid/env")
+    def envJson = new JsonSlurper().parseText(envResponse)
+    def vcapServicesMap = envJson["system_env_json"]?.getAt("VCAP_SERVICES")
+
+    def entryWithDbInstance = vcapServicesMap
+            .find { key, value -> value.any { it["name"] == databaseInstanceName } }
+
+    def dbInstance = entryWithDbInstance.value
+            .find { it["name"] == databaseInstanceName }
+    println "Credentials : " + dbInstance["credentials"]
+    return dbInstance["credentials"]
+}
+
+ext.setupProdFlywayExtension = { extension, cfAppName, databaseInstanceName ->
+    def mysqlCredentials = getMysqlCredentials(cfAppName, databaseInstanceName)
+
+    if (mysqlCredentials != null) {
+        def databaseName = mysqlCredentials["name"]
+        def user = mysqlCredentials["username"]
+        def password = mysqlCredentials["password"]
+        def url = "jdbc:mysql://127.0.0.1:63306/" + databaseName
+
+        extension.user = user
+        extension.password = password
+        extension.url = url
+    }
+
+    return extension
+}
+
+ext.getMysqlHost = { cfAppName, databaseInstanceName ->
+    def mysqlCredentials = getMysqlCredentials(cfAppName, databaseInstanceName)
+    println "Hostname : " + mysqlCredentials["hostname"]
+    return mysqlCredentials["hostname"]
+}
+
+private static String execute(String command) {
+    println command
+    def process = command.execute()
+    def output = process.text
+    process.waitFor()
+    return output
+}
