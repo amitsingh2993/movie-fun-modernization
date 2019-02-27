@@ -12,6 +12,7 @@ import org.superbiz.cloudfoundry.ServiceCredentials;
 import org.superbiz.moviefun.blobstore.BlobStore;
 import org.superbiz.moviefun.blobstore.S3Store;
 
+@EnableEurekaClient
 @SpringBootApplication
 @EnableEurekaClient
 public class AlbumServiceApplication {
