@@ -19,6 +19,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="language" value="${pageContext.request.locale}"/>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:setLocale value="${language}"/>
 
 <!DOCTYPE html>
@@ -73,6 +74,7 @@
 
   <form class="movie-input-form form-inline" action="moviefun"
         method="post">
+    <sec:csrfInput />
     <p>Add Movie</p>
     <input type="text" name="title" placeholder="Title" size="29"/> <input
       type="text" name="director" placeholder="Director" size="17"/> <input

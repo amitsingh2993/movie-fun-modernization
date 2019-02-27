@@ -25,7 +25,7 @@ public class AlbumServiceApplication {
     @Bean
     public BlobStore blobStore(
         ServiceCredentials serviceCredentials,
-        @Value("${vcap.services.photo-storage.credentials.endpoint:#{null}}") String endpoint
+        @Value("${s3.endpointurl:#{null}}") String endpoint
     ) {
         String photoStorageAccessKeyId = serviceCredentials.getCredential("photo-storage", "user-provided", "access_key_id");
         String photoStorageSecretKey = serviceCredentials.getCredential("photo-storage", "user-provided", "secret_access_key");
